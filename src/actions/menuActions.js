@@ -3,8 +3,10 @@ import { RETRIEVE_MENUS, CREATE_MENU, UPDATE_MENU, DELETE_MENU } from "./types";
 import menuList from "./initMenu";
 
 export const initLocalStorage = () => {
-  window.localStorage.clear();
-  window.localStorage.setItem("menuList", JSON.stringify(menuList));
+  if (!window.localStorage.getItem("menuList")) {
+    window.localStorage.clear();
+    window.localStorage.setItem("menuList", JSON.stringify(menuList));
+  }
 };
 
 export const retrieveMenus = () => async (dispatch) => {

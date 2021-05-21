@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { initLocalStorage, retrieveMenus, createMenu } from "../actions/menus";
+import { Button, Modal } from "react-bootstrap";
+import {
+  initLocalStorage,
+  retrieveMenus,
+  createMenu,
+} from "../actions/menuActions";
 
 const MenuList = () => {
   const menus = useSelector((state) => state.menus);
@@ -16,6 +21,11 @@ const MenuList = () => {
     description: "",
   };
   const [menuGroup, setMenu] = useState(initialMenuState);
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const nameInputRef = useRef();
   const descriptionInputRef = useRef();
@@ -35,7 +45,8 @@ const MenuList = () => {
 
     dispatch(createMenu(name, description))
       .then(retrieveMenus())
-      .then(resetFields());
+      .then(resetFields())
+      .then(handleClose());
   };
 
   return (
@@ -50,39 +61,57 @@ const MenuList = () => {
               </li>
             ))}
         </ul>
+        <Button variant="primary" onClick={handleShow}>
+          Add Menu
+        </Button>
 
-        <div className="form-group">
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            className="form-control"
-            id="name"
-            required
-            value={menuGroup.name}
-            onChange={handleInputChange}
-            name="name"
-            ref={nameInputRef}
-          />
+        <div>
+          <Modal show={show} onHide={handleClose} centered animation={false}>
+            <Modal.Header closeButton>
+              <Modal.Title id="contained-modal-title-vcenter">
+                Modal heading
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div className="form-group">
+                <label htmlFor="name">Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="name"
+                  required
+                  value={menuGroup.name}
+                  onChange={handleInputChange}
+                  name="name"
+                  ref={nameInputRef}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="description">Description</label>
+                <textarea
+                  rows="10"
+                  cols="100"
+                  className="form-control"
+                  id="description"
+                  required
+                  value={menuGroup.description}
+                  onChange={handleInputChange}
+                  name="description"
+                  ref={descriptionInputRef}
+                />
+              </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="outline-success" onClick={saveMenu}>
+                Submit
+              </Button>
+              <Button variant="outline-danger" onClick={handleClose}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
-
-        <div className="form-group">
-          <label htmlFor="description">Description</label>
-          <textarea
-            rows="10"
-            cols="100"
-            className="form-control"
-            id="description"
-            required
-            value={menuGroup.description}
-            onChange={handleInputChange}
-            name="description"
-            ref={descriptionInputRef}
-          />
-        </div>
-
-        <button onClick={saveMenu} className="btn btn-success">
-          Submit
-        </button>
       </div>
     </div>
   );
