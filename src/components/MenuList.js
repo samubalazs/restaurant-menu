@@ -1,68 +1,64 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  initLocalStorage,
-  retrieveQuestions,
-  createQuestion,
-} from "../actions/questions";
+import { initLocalStorage, retrieveMenus, createMenu } from "../actions/menus";
 
-const QuestionsList = () => {
-  const questions = useSelector((state) => state.questions);
+const MenuList = () => {
+  const menus = useSelector((state) => state.menus);
   const dispatch = useDispatch();
 
   useEffect(() => {
     initLocalStorage();
-    dispatch(retrieveQuestions());
+    dispatch(retrieveMenus());
   }, []);
 
-  const initialQuestionState = {
+  const initialMenuState = {
     name: "",
     description: "",
   };
-  const [questionGroup, setQuestion] = useState(initialQuestionState);
+  const [menuGroup, setMenu] = useState(initialMenuState);
 
   const nameInputRef = useRef();
   const descriptionInputRef = useRef();
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setQuestion({ ...questionGroup, [name]: value });
+    setMenu({ ...menuGroup, [name]: value });
   };
 
   const resetFields = () => {
-    questionGroup.name = "";
-    questionGroup.description = "";
+    menuGroup.name = "";
+    menuGroup.description = "";
   };
 
-  const saveQuestion = () => {
-    const { name, description } = questionGroup;
+  const saveMenu = () => {
+    const { name, description } = menuGroup;
 
-    dispatch(createQuestion(name, description))
-      .then(retrieveQuestions())
+    dispatch(createMenu(name, description))
+      .then(retrieveMenus())
       .then(resetFields());
   };
 
   return (
     <div className="list row">
       <div className="col-md-12">
-        <h4>Questions List</h4>
+        <h4>Menus List</h4>
         <ul className="list-group">
-          {questions &&
-            questions.map((question, index) => (
+          {menus &&
+            menus.map((menu, index) => (
               <li className={"list-group-item"} key={index}>
-                {question.name}
+                {menu.name}
               </li>
             ))}
         </ul>
 
         <div className="form-group">
-          <label htmlFor="question">Question</label>
+          <label htmlFor="name">Name</label>
           <input
             type="text"
             className="form-control"
             id="name"
             required
-            value={questionGroup.name}
+            value={menuGroup.name}
             onChange={handleInputChange}
             name="name"
             ref={nameInputRef}
@@ -70,21 +66,21 @@ const QuestionsList = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="answer">Answer</label>
+          <label htmlFor="description">Description</label>
           <textarea
             rows="10"
             cols="100"
             className="form-control"
             id="description"
             required
-            value={questionGroup.description}
+            value={menuGroup.description}
             onChange={handleInputChange}
             name="description"
             ref={descriptionInputRef}
           />
         </div>
 
-        <button onClick={saveQuestion} className="btn btn-success">
+        <button onClick={saveMenu} className="btn btn-success">
           Submit
         </button>
       </div>
@@ -92,4 +88,4 @@ const QuestionsList = () => {
   );
 };
 
-export default QuestionsList;
+export default MenuList;

@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import questions from "./questions";
+import menus from "./menus";
 
 export default combineReducers({
-  questions,
+  menus,
 });

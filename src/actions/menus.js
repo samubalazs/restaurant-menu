@@ -1,23 +1,18 @@
-import {
-  CREATE_QUESTION,
-  RETRIEVE_QUESTIONS,
-  UPDATE_QUESTION,
-  DELETE_QUESTION,
-} from "./types";
+import { RETRIEVE_MENUS, CREATE_MENU, UPDATE_MENU, DELETE_MENU } from "./types";
 
-import menuList from "./menu";
+import menuList from "./initMenu";
 
 export const initLocalStorage = () => {
   window.localStorage.clear();
   window.localStorage.setItem("menuList", JSON.stringify(menuList));
 };
 
-export const retrieveQuestions = () => async (dispatch) => {
+export const retrieveMenus = () => async (dispatch) => {
   try {
     const res = await JSON.parse(window.localStorage.getItem("menuList"));
 
     dispatch({
-      type: RETRIEVE_QUESTIONS,
+      type: RETRIEVE_MENUS,
       payload: res,
     });
   } catch (err) {
@@ -25,7 +20,7 @@ export const retrieveQuestions = () => async (dispatch) => {
   }
 };
 
-export const createQuestion = (name, description) => async (dispatch) => {
+export const createMenu = (name, description) => async (dispatch) => {
   try {
     let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
     currentMenuList.push({ name: name, description: description });
@@ -34,7 +29,7 @@ export const createQuestion = (name, description) => async (dispatch) => {
     const res = await JSON.parse(window.localStorage.getItem("menuList"));
 
     dispatch({
-      type: CREATE_QUESTION,
+      type: CREATE_MENU,
       payload: res,
     });
 
@@ -44,12 +39,12 @@ export const createQuestion = (name, description) => async (dispatch) => {
   }
 };
 /*
-export const updateQuestion = (id, data) => async (dispatch) => {
+export const updateMenu = (id, data) => async (dispatch) => {
   try {
-    const res = await QuestionDataService.update(id, data);
+    const res = await dummy(id, data);
 
     dispatch({
-      type: UPDATE_QUESTION,
+      type: UPDATE_MENU,
       payload: data,
     });
 
@@ -59,12 +54,12 @@ export const updateQuestion = (id, data) => async (dispatch) => {
   }
 };
 
-export const deleteQuestion = (id) => async (dispatch) => {
+export const deleteMenu = (id) => async (dispatch) => {
   try {
-    await QuestionDataService.remove(id);
+    await dummy(id);
 
     dispatch({
-      type: DELETE_QUESTION,
+      type: DELETE_MENU,
       payload: { id },
     });
   } catch (err) {
