@@ -5,24 +5,11 @@ import {
   DELETE_QUESTION,
 } from "./types";
 
-export const createQuestion = (name, description) => async (dispatch) => {
-  try {
-    let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
-    currentMenuList.push({ name: name, description: description });
-    window.localStorage.setItem("menuList", JSON.stringify(currentMenuList));
+import menuList from "./menu";
 
-    const res = await JSON.parse(window.localStorage.getItem("menuList"));
-    console.log(res);
-
-    dispatch({
-      type: CREATE_QUESTION,
-      payload: res,
-    });
-
-    return Promise.resolve(res);
-  } catch (err) {
-    return Promise.reject(err);
-  }
+export const initLocalStorage = () => {
+  window.localStorage.clear();
+  window.localStorage.setItem("menuList", JSON.stringify(menuList));
 };
 
 export const retrieveQuestions = () => async (dispatch) => {
@@ -35,6 +22,25 @@ export const retrieveQuestions = () => async (dispatch) => {
     });
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const createQuestion = (name, description) => async (dispatch) => {
+  try {
+    let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
+    currentMenuList.push({ name: name, description: description });
+    window.localStorage.setItem("menuList", JSON.stringify(currentMenuList));
+
+    const res = await JSON.parse(window.localStorage.getItem("menuList"));
+
+    dispatch({
+      type: CREATE_QUESTION,
+      payload: res,
+    });
+
+    return Promise.resolve(res);
+  } catch (err) {
+    return Promise.reject(err);
   }
 };
 /*

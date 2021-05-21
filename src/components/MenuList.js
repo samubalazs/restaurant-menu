@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { retrieveQuestions, createQuestion } from "../actions/questions";
+import {
+  initLocalStorage,
+  retrieveQuestions,
+  createQuestion,
+} from "../actions/questions";
 
 const QuestionsList = () => {
   const questions = useSelector((state) => state.questions);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    initLocalStorage();
     dispatch(retrieveQuestions());
   }, []);
 
