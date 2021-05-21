@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Tabs, Tab } from "react-bootstrap";
 import {
   initLocalStorage,
   retrieveMenus,
@@ -52,18 +52,19 @@ const MenuList = () => {
   return (
     <div className="list row">
       <div className="col-md-12">
-        <h4>Menus List</h4>
-        <ul className="list-group">
-          {menus &&
-            menus.map((menu, index) => (
-              <li className={"list-group-item"} key={index}>
-                {menu.name}
-              </li>
-            ))}
-        </ul>
+        <h4>Restaurant Menu List</h4>
         <Button variant="primary" onClick={handleShow}>
           Add Menu
         </Button>
+
+        <Tabs>
+          {menus &&
+            menus.map((menu, index) => (
+              <Tab eventKey={menu.name} title={menu.name}>
+                {menu.description}
+              </Tab>
+            ))}
+        </Tabs>
 
         <div>
           <Modal show={show} onHide={handleClose} centered animation={false}>
