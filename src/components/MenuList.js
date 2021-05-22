@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams,
+  useLocation,
+} from "react-router-dom";
 import { Button, Modal, Tabs, Tab } from "react-bootstrap";
 import {
   initLocalStorage,
@@ -7,6 +15,11 @@ import {
   createMenu,
 } from "../actions/menuActions";
 import MenuContent from "./MenuContent";
+
+function useQuery() {
+  //return new URLSearchParams(useLocation().search);
+  console.log(new URLSearchParams().entries);
+}
 
 const MenuList = () => {
   const menus = useSelector((state) => state.menus);
@@ -39,6 +52,10 @@ const MenuList = () => {
     setMenu({ ...menuGroup, [name]: value });
   };
 
+  const handleInputChangea = (event) => {
+    const { name, value } = event.target;
+  };
+
   const resetFields = () => {
     menuGroup.name = "";
     menuGroup.description = "";
@@ -57,7 +74,11 @@ const MenuList = () => {
     console.log("clicked");
   };
 
-  const menuListItem = (menu, index) => {
+  /*const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+  };*/
+
+  /*const menuListItem = (menu, index) => {
     return (
       <Tab eventKey={menu.name} title={menu.name} key={index}>
         {menu.description}
@@ -87,9 +108,8 @@ const MenuList = () => {
                   id="name"
                   required
                   value={menu.name}
-                  onChange={handleInputChange}
+                  onChange={handleInputChangea}
                   name="name"
-                  ref={nameInputRef}
                 />
               </div>
 
@@ -102,9 +122,8 @@ const MenuList = () => {
                   id="description"
                   required
                   value={menu.description}
-                  onChange={handleInputChange}
+                  onChange={handleInputChangea}
                   name="description"
-                  ref={descriptionInputRef}
                 />
               </div>
             </Modal.Body>
@@ -120,9 +139,9 @@ const MenuList = () => {
         </div>
       </Tab>
     );
-  };
+  };*/
 
-  return (
+  /*return (
     <div className="list row">
       <div className="col-md-12">
         <h4>Restaurant Menu List</h4>
@@ -188,7 +207,41 @@ const MenuList = () => {
         </div>
       </div>
     </div>
+  );*/
+
+  return (
+    <Router>
+      <div>
+        <h2>Accounts</h2>
+        <ul>
+          {menus &&
+            menus.map((menu) => {
+              return (
+                <li key={menu._id}>
+                  <Link to={menu._id}>{menu.name}</Link>
+                </li>
+              );
+            })}
+        </ul>
+
+        <Switch>
+          <Route path="/:id" children={<Child />} />
+        </Switch>
+      </div>
+    </Router>
   );
 };
+
+function Child() {
+  // We can use the `useParams` hook here to access
+  // the dynamic pieces of the URL.
+  let { id } = useParams();
+
+  return (
+    <div>
+      <h3>ID: {id}</h3>
+    </div>
+  );
+}
 
 export default MenuList;
