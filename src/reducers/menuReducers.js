@@ -1,7 +1,7 @@
 import {
   RETRIEVE_MENUS,
   CREATE_MENU,
-  UPDATE_MENU,
+  EDIT_MENU,
   DELETE_MENU,
 } from "../actions/types";
 
@@ -17,7 +17,7 @@ const menuReducer = (menus = initialState, action) => {
     case CREATE_MENU:
       return payload;
 
-    case UPDATE_MENU:
+    case EDIT_MENU:
       return menus.map((menu) => {
         if (menu.id === payload.id) {
           return {

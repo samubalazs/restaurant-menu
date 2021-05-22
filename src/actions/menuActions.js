@@ -1,4 +1,4 @@
-import { RETRIEVE_MENUS, CREATE_MENU, UPDATE_MENU, DELETE_MENU } from "./types";
+import { RETRIEVE_MENUS, CREATE_MENU, EDIT_MENU, DELETE_MENU } from "./types";
 
 import menuList from "./initMenu";
 
@@ -41,12 +41,12 @@ export const createMenu = (name, description) => async (dispatch) => {
   }
 };
 /*
-export const updateMenu = (id, data) => async (dispatch) => {
+export const editMenu = (id, data) => async (dispatch) => {
   try {
     const res = await dummy(id, data);
 
     dispatch({
-      type: UPDATE_MENU,
+      type: EDIT_MENU,
       payload: data,
     });
 
