@@ -77,165 +77,102 @@ const MenuList = () => {
   /*const useQuery = () => {
     return new URLSearchParams(useLocation().search);
   };*/
-
-  /*const menuListItem = (menu, index) => {
-    return (
-      <Tab eventKey={menu.name} title={menu.name} key={index}>
-        {menu.description}
-        <Button variant="primary" onClick={showEditMenu}>
-          Edit Menu
-        </Button>
-        {menu.menuContents &&
-          menu.menuContents.map((content) => <MenuContent content={content} />)}
-        <div>
-          <Modal
-            show={showEdit}
-            onHide={closeEditMenu}
-            centered
-            animation={false}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title id="contained-modal-title-vcenter">
-                Modal heading
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <div className="form-group">
-                <label htmlFor="name">Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="name"
-                  required
-                  value={menu.name}
-                  onChange={handleInputChangea}
-                  name="name"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="description">Description</label>
-                <textarea
-                  rows="10"
-                  cols="100"
-                  className="form-control"
-                  id="description"
-                  required
-                  value={menu.description}
-                  onChange={handleInputChangea}
-                  name="description"
-                />
-              </div>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="outline-success" onClick={saveChanges}>
-                Save
-              </Button>
-              <Button variant="outline-danger" onClick={closeEditMenu}>
-                Close
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </div>
-      </Tab>
-    );
-  };*/
-
-  /*return (
-    <div className="list row">
-      <div className="col-md-12">
-        <h4>Restaurant Menu List</h4>
-        <Button variant="primary" onClick={showAddMenu}>
-          Add Menu
-        </Button>
-
-        <Tabs>
-          {menus && menus.map((menu, index) => menuListItem(menu, index))}
-        </Tabs>
-
-        <div>
-          <Modal
-            show={showAdd}
-            onHide={closeAddMenu}
-            centered
-            animation={false}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title id="contained-modal-title-vcenter">
-                Modal heading
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <div className="form-group">
-                <label htmlFor="name">Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="name"
-                  required
-                  value={menuGroup.name}
-                  onChange={handleInputChange}
-                  name="name"
-                  ref={nameInputRef}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="description">Description</label>
-                <textarea
-                  rows="10"
-                  cols="100"
-                  className="form-control"
-                  id="description"
-                  required
-                  value={menuGroup.description}
-                  onChange={handleInputChange}
-                  name="description"
-                  ref={descriptionInputRef}
-                />
-              </div>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="outline-success" onClick={saveMenu}>
-                Submit
-              </Button>
-              <Button variant="outline-danger" onClick={closeAddMenu}>
-                Close
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </div>
-      </div>
-    </div>
-  );*/
+  const createRouterPath = (routerName) => {
+    return `/${routerName}`;
+  };
 
   return (
     <Router>
       <div>
-        <h2>Accounts</h2>
+        <h4>Restaurant Menu List</h4>
+        <Button variant="primary" onClick={showAddMenu}>
+          Add Menu
+        </Button>
         <ul>
           {menus &&
             menus.map((menu) => {
               return (
-                <li key={menu._id}>
-                  <Link to={menu._id}>{menu.name}</Link>
+                <li key={menu.name}>
+                  <Link to={menu.name}>{menu.name}</Link>
                 </li>
               );
             })}
         </ul>
 
+        <hr />
+
         <Switch>
-          <Route path="/:id" children={<Child />} />
+          {menus &&
+            menus.map((menu) => {
+              return (
+                <Route path={createRouterPath(menu.name)}>
+                  {menu.description}
+                  {menu.menuContents &&
+                    menu.menuContents.map((content) => (
+                      <MenuContent content={content} />
+                    ))}
+                </Route>
+              );
+            })}
         </Switch>
+      </div>
+      <div>
+        <Modal show={showAdd} onHide={closeAddMenu} centered animation={false}>
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-vcenter">
+              Modal heading
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="form-group">
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                required
+                value={menuGroup.name}
+                onChange={handleInputChange}
+                name="name"
+                ref={nameInputRef}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="description">Description</label>
+              <textarea
+                rows="10"
+                cols="100"
+                className="form-control"
+                id="description"
+                required
+                value={menuGroup.description}
+                onChange={handleInputChange}
+                name="description"
+                ref={descriptionInputRef}
+              />
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="outline-success" onClick={saveMenu}>
+              Submit
+            </Button>
+            <Button variant="outline-danger" onClick={closeAddMenu}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </Router>
   );
 };
 
-function Child() {
+function Child(menus) {
   // We can use the `useParams` hook here to access
   // the dynamic pieces of the URL.
   let { id } = useParams();
+  const currentMenu = menus.menus.filter((menu) => menu._id === id);
+  console.log(currentMenu);
 
   return (
     <div>
