@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Button, Modal } from "react-bootstrap";
-import { editMenu, deleteMenu } from "../actions/menuActions";
+import {
+  editMenu,
+  deleteMenu,
+  createMenu,
+  retrieveMenus,
+} from "../actions/menuActions";
 import MenuContent from "./MenuContent";
 
 const MenuItem = (props) => {
@@ -13,7 +18,7 @@ const MenuItem = (props) => {
   const showEditMenu = () => setShowEdit(true);
   const closeEditMenu = () => setShowEdit(false);
 
-  const handleInputChange = (event) => {
+  const handleMenuDetailsChange = (event) => {
     const { name, value } = event.target;
     setMenuItemDetails({ ...menuItemDetails, [name]: value });
   };
@@ -38,6 +43,38 @@ const MenuItem = (props) => {
     );
   };
 
+  //---------------
+
+  const initialContentState = {
+    name: "",
+    price: "",
+    parentId: menuDetails._id,
+  };
+
+  const [contentItemDetails, setContentItemDetails] =
+    useState(initialContentState);
+  const [showAddContent, setShowAddContent] = useState(false);
+
+  const showAddContentMenu = () => setShowAddContent(true);
+  const closeAddContentMenu = () => setShowAddContent(false);
+
+  const handleContentDetailsChange = (event) => {
+    const { name, value } = event.target;
+    setContentItemDetails({ ...contentItemDetails, [name]: value });
+  };
+
+  const resetFields = () => {
+    contentItemDetails.name = "";
+    contentItemDetails.price = "";
+  };
+
+  const saveContent = () => {
+    dispatch(createMenu(contentItemDetails))
+      .then(retrieveMenus())
+      .then(resetFields())
+      .then(closeAddContentMenu());
+  };
+
   return (
     <div>
       <Button variant="primary" onClick={showEditMenu}>
@@ -45,6 +82,9 @@ const MenuItem = (props) => {
       </Button>
       <Button variant="primary" onClick={removeCurrentMenu}>
         Delete Menu
+      </Button>
+      <Button variant="primary" onClick={showAddContentMenu}>
+        Add Menu Content
       </Button>
       {menuDetails.description}
       {menuDetails.menuContents &&
@@ -72,7 +112,7 @@ const MenuItem = (props) => {
                 id="name"
                 required
                 defaultValue={menuDetails.name}
-                onChange={handleInputChange}
+                onChange={handleMenuDetailsChange}
                 name="name"
               />
             </div>
@@ -86,7 +126,7 @@ const MenuItem = (props) => {
                 id="description"
                 required
                 defaultValue={menuDetails.description}
-                onChange={handleInputChange}
+                onChange={handleMenuDetailsChange}
                 name="description"
               />
             </div>
@@ -96,6 +136,56 @@ const MenuItem = (props) => {
               Save
             </Button>
             <Button variant="outline-danger" onClick={closeEditMenu}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+      <div>
+        <Modal
+          show={showAddContent}
+          onHide={closeAddContentMenu}
+          centered
+          animation={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-vcenter">
+              Add Content
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="form-group">
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                required
+                value={showAddContent.name}
+                onChange={handleContentDetailsChange}
+                name="name"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="price">Price</label>
+              <textarea
+                rows="10"
+                cols="100"
+                className="form-control"
+                id="price"
+                required
+                value={showAddContent.price}
+                onChange={handleContentDetailsChange}
+                name="price"
+              />
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="outline-success" onClick={saveContent}>
+              Submit
+            </Button>
+            <Button variant="outline-danger" onClick={closeAddContentMenu}>
               Close
             </Button>
           </Modal.Footer>

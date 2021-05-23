@@ -22,10 +22,32 @@ export const retrieveMenus = () => async (dispatch) => {
   }
 };
 
-export const createMenu = (name, description) => async (dispatch) => {
+export const createMenu = (details) => async (dispatch) => {
   try {
     let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
-    currentMenuList.push({ name: name, description: description });
+    if (details.parentId) {
+      //currentMenuList.push({ name: name, description: description + "test" });
+      const updatedMenuList = currentMenuList.map((menu) => {
+        if (menu._id === details.parentId) {
+          const updatedContentList = menu.menuContents.push({
+            name: details.name,
+            price: details.price,
+          });
+          return {
+            ...menu,
+            updatedContentList,
+          };
+        } else {
+          return menu;
+        }
+      });
+      currentMenuList = updatedMenuList;
+    } else {
+      currentMenuList.push({
+        name: details.name,
+        description: details.description,
+      });
+    }
     window.localStorage.setItem("menuList", JSON.stringify(currentMenuList));
 
     const res = await JSON.parse(window.localStorage.getItem("menuList"));

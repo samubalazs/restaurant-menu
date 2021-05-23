@@ -1,12 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useParams,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
 import {
   initLocalStorage,
@@ -28,30 +22,27 @@ const MenuList = () => {
     name: "",
     description: "",
   };
-  const [menuGroup, setMenu] = useState(initialMenuState);
+  const [menuItemDetails, setMenuItemDetails] = useState(initialMenuState);
 
   const [showAdd, setShowAdd] = useState(false);
 
   const showAddMenu = () => setShowAdd(true);
   const closeAddMenu = () => setShowAdd(false);
 
-  const nameInputRef = useRef();
-  const descriptionInputRef = useRef();
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setMenu({ ...menuGroup, [name]: value });
+    setMenuItemDetails({ ...menuItemDetails, [name]: value });
   };
 
   const resetFields = () => {
-    menuGroup.name = "";
-    menuGroup.description = "";
+    menuItemDetails.name = "";
+    menuItemDetails.description = "";
   };
 
   const saveMenu = () => {
-    const { name, description } = menuGroup;
+    //const { name, description } = menuGroup;
 
-    dispatch(createMenu(name, description))
+    dispatch(createMenu(menuItemDetails))
       .then(retrieveMenus())
       .then(resetFields())
       .then(closeAddMenu());
@@ -107,10 +98,9 @@ const MenuList = () => {
                 className="form-control"
                 id="name"
                 required
-                value={menuGroup.name}
+                value={menuItemDetails.name}
                 onChange={handleInputChange}
                 name="name"
-                ref={nameInputRef}
               />
             </div>
 
@@ -122,10 +112,9 @@ const MenuList = () => {
                 className="form-control"
                 id="description"
                 required
-                value={menuGroup.description}
+                value={menuItemDetails.description}
                 onChange={handleInputChange}
                 name="description"
-                ref={descriptionInputRef}
               />
             </div>
           </Modal.Body>
