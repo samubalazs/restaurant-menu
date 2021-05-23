@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Button, Modal } from "react-bootstrap";
-import { editMenu, retrieveMenus } from "../actions/menuActions";
+import { editMenu, deleteMenu } from "../actions/menuActions";
 import MenuContent from "./MenuContent";
 
 const MenuItem = (props) => {
@@ -21,8 +21,6 @@ const MenuItem = (props) => {
   const dispatch = useDispatch();
 
   const saveChanges = () => {
-    console.log("clicked", menuItemDetails);
-
     dispatch(editMenu(menuItemDetails._id, menuItemDetails))
       .then(closeEditMenu())
       .then(
@@ -34,11 +32,19 @@ const MenuItem = (props) => {
       );
   };
 
-  //console.log(menuDetails);
+  const removeCurrentMenu = () => {
+    dispatch(deleteMenu(menuDetails._id)).then(
+      window.history.replaceState(null, "Restaurant Menus", "/")
+    );
+  };
+
   return (
     <div>
       <Button variant="primary" onClick={showEditMenu}>
         Edit Menu
+      </Button>
+      <Button variant="primary" onClick={removeCurrentMenu}>
+        Delete Menu
       </Button>
       {menuDetails.description}
       {menuDetails.menuContents &&

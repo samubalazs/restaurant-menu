@@ -21,7 +21,7 @@ const menuReducer = (menus = initialState, action) => {
       return payload;
 
     case DELETE_MENU:
-      return menus.filter(({ id }) => id !== payload.id);
+      return payload;
 
     default:
       return menus;

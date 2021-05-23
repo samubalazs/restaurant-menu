@@ -44,7 +44,7 @@ export const createMenu = (name, description) => async (dispatch) => {
 export const editMenu = (id, data) => async (dispatch) => {
   try {
     let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
-    const changed = currentMenuList.map((menu) => {
+    const updatedMenuList = currentMenuList.map((menu) => {
       if (menu._id === id) {
         return {
           ...menu,
@@ -54,7 +54,7 @@ export const editMenu = (id, data) => async (dispatch) => {
         return menu;
       }
     });
-    window.localStorage.setItem("menuList", JSON.stringify(changed));
+    window.localStorage.setItem("menuList", JSON.stringify(updatedMenuList));
 
     const res = await JSON.parse(window.localStorage.getItem("menuList"));
 
@@ -69,15 +69,19 @@ export const editMenu = (id, data) => async (dispatch) => {
   }
 };
 
-/*export const deleteMenu = (id) => async (dispatch) => {
+export const deleteMenu = (id) => async (dispatch) => {
   try {
-    await dummy(id);
+    let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
+    const updatedMenuList = currentMenuList.filter(({ _id }) => _id !== id);
+    window.localStorage.setItem("menuList", JSON.stringify(updatedMenuList));
+
+    const res = await JSON.parse(window.localStorage.getItem("menuList"));
 
     dispatch({
       type: DELETE_MENU,
-      payload: { id },
+      payload: res,
     });
   } catch (err) {
     console.log(err);
   }
-};*/
+};
