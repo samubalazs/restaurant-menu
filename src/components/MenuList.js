@@ -6,20 +6,14 @@ import {
   Route,
   Link,
   useParams,
-  useLocation,
 } from "react-router-dom";
-import { Button, Modal, Tabs, Tab } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import {
   initLocalStorage,
   retrieveMenus,
   createMenu,
 } from "../actions/menuActions";
-import MenuContent from "./MenuContent";
-
-function useQuery() {
-  //return new URLSearchParams(useLocation().search);
-  console.log(new URLSearchParams().entries);
-}
+import MenuItem from "./MenuItem";
 
 const MenuList = () => {
   const menus = useSelector((state) => state.menus);
@@ -37,12 +31,9 @@ const MenuList = () => {
   const [menuGroup, setMenu] = useState(initialMenuState);
 
   const [showAdd, setShowAdd] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
 
   const showAddMenu = () => setShowAdd(true);
   const closeAddMenu = () => setShowAdd(false);
-  const showEditMenu = () => setShowEdit(true);
-  const closeEditMenu = () => setShowEdit(false);
 
   const nameInputRef = useRef();
   const descriptionInputRef = useRef();
@@ -50,10 +41,6 @@ const MenuList = () => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setMenu({ ...menuGroup, [name]: value });
-  };
-
-  const handleInputChangea = (event) => {
-    const { name, value } = event.target;
   };
 
   const resetFields = () => {
@@ -70,13 +57,6 @@ const MenuList = () => {
       .then(closeAddMenu());
   };
 
-  const saveChanges = () => {
-    console.log("clicked");
-  };
-
-  /*const useQuery = () => {
-    return new URLSearchParams(useLocation().search);
-  };*/
   const createRouterPath = (routerName) => {
     return `/${routerName}`;
   };
@@ -106,11 +86,7 @@ const MenuList = () => {
             menus.map((menu) => {
               return (
                 <Route path={createRouterPath(menu.name)}>
-                  {menu.description}
-                  {menu.menuContents &&
-                    menu.menuContents.map((content) => (
-                      <MenuContent content={content} />
-                    ))}
+                  <MenuItem menuDetails={menu} />
                 </Route>
               );
             })}
@@ -166,19 +142,5 @@ const MenuList = () => {
     </Router>
   );
 };
-
-function Child(menus) {
-  // We can use the `useParams` hook here to access
-  // the dynamic pieces of the URL.
-  let { id } = useParams();
-  const currentMenu = menus.menus.filter((menu) => menu._id === id);
-  console.log(currentMenu);
-
-  return (
-    <div>
-      <h3>ID: {id}</h3>
-    </div>
-  );
-}
 
 export default MenuList;
