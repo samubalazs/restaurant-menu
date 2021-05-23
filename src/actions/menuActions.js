@@ -40,23 +40,36 @@ export const createMenu = (name, description) => async (dispatch) => {
     return Promise.reject(err);
   }
 };
-/*
+
 export const editMenu = (id, data) => async (dispatch) => {
   try {
-    const res = await dummy(id, data);
+    let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
+    const changed = currentMenuList.map((menu) => {
+      if (menu._id === id) {
+        return {
+          ...menu,
+          ...data,
+        };
+      } else {
+        return menu;
+      }
+    });
+    window.localStorage.setItem("menuList", JSON.stringify(changed));
+
+    const res = await JSON.parse(window.localStorage.getItem("menuList"));
 
     dispatch({
       type: EDIT_MENU,
-      payload: data,
+      payload: res,
     });
 
-    return Promise.resolve(res.data);
+    return Promise.resolve(res);
   } catch (err) {
     return Promise.reject(err);
   }
 };
 
-export const deleteMenu = (id) => async (dispatch) => {
+/*export const deleteMenu = (id) => async (dispatch) => {
   try {
     await dummy(id);
 

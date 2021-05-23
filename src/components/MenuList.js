@@ -96,7 +96,7 @@ const MenuList = () => {
         <Modal show={showAdd} onHide={closeAddMenu} centered animation={false}>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              Modal heading
+              Add Menu
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>

@@ -1,17 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Modal } from "react-bootstrap";
+import { editMenu, retrieveMenus } from "../actions/menuActions";
 import MenuContent from "./MenuContent";
 
 const MenuItem = (props) => {
   const menuDetails = props.menuDetails;
 
-  const initialMenuState = {
-    name: "",
-    description: "",
-  };
-
-  const [menuGroup, setMenu] = useState(initialMenuState);
+  const [menuItemDetails, setMenuItemDetails] = useState(menuDetails);
   const [showEdit, setShowEdit] = useState(false);
 
   const showEditMenu = () => setShowEdit(true);
@@ -19,11 +15,23 @@ const MenuItem = (props) => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setMenu({ ...menuGroup, [name]: value });
+    setMenuItemDetails({ ...menuItemDetails, [name]: value });
   };
 
+  const dispatch = useDispatch();
+
   const saveChanges = () => {
-    console.log("clicked");
+    console.log("clicked", menuItemDetails);
+
+    dispatch(editMenu(menuItemDetails._id, menuItemDetails))
+      .then(closeEditMenu())
+      .then(
+        window.history.replaceState(
+          null,
+          menuItemDetails.name,
+          `/${menuItemDetails.name}`
+        )
+      );
   };
 
   //console.log(menuDetails);
@@ -46,7 +54,7 @@ const MenuItem = (props) => {
         >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              Modal heading
+              Edit Menu
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -57,7 +65,7 @@ const MenuItem = (props) => {
                 className="form-control"
                 id="name"
                 required
-                value={menuDetails.name}
+                defaultValue={menuDetails.name}
                 onChange={handleInputChange}
                 name="name"
               />
@@ -71,7 +79,7 @@ const MenuItem = (props) => {
                 className="form-control"
                 id="description"
                 required
-                value={menuDetails.description}
+                defaultValue={menuDetails.description}
                 onChange={handleInputChange}
                 name="description"
               />

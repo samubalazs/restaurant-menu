@@ -18,16 +18,7 @@ const menuReducer = (menus = initialState, action) => {
       return payload;
 
     case EDIT_MENU:
-      return menus.map((menu) => {
-        if (menu.id === payload.id) {
-          return {
-            ...menu,
-            ...payload,
-          };
-        } else {
-          return menu;
-        }
-      });
+      return payload;
 
     case DELETE_MENU:
       return menus.filter(({ id }) => id !== payload.id);
