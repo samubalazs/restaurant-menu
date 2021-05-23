@@ -2,3 +2,6 @@ export const RETRIEVE_MENUS = "RETRIEVE_MENUS";
 export const CREATE_MENU = "CREATE_MENU";
 export const EDIT_MENU = "EDIT_MENU";
 export const DELETE_MENU = "DELETE_MENU";
+export const CREATE_CONTENT = "CREATE_CONTENT";
+export const EDIT_CONTENT = "EDIT_CONTENT";
+export const DELETE_CONTENT = "DELETE_CONTENT";

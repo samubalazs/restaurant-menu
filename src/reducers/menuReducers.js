@@ -3,6 +3,9 @@ import {
   CREATE_MENU,
   EDIT_MENU,
   DELETE_MENU,
+  CREATE_CONTENT,
+  EDIT_CONTENT,
+  DELETE_CONTENT,
 } from "../actions/types";
 
 const initialState = [];
@@ -21,6 +24,15 @@ const menuReducer = (menus = initialState, action) => {
       return payload;
 
     case DELETE_MENU:
+      return payload;
+
+    case CREATE_CONTENT:
+      return payload;
+
+    case EDIT_CONTENT:
+      return payload;
+
+    case DELETE_CONTENT:
       return payload;
 
     default:

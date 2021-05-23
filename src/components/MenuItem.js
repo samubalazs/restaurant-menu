@@ -4,8 +4,8 @@ import { Button, Modal } from "react-bootstrap";
 import {
   editMenu,
   deleteMenu,
-  createMenu,
   retrieveMenus,
+  createContent,
 } from "../actions/menuActions";
 import MenuContent from "./MenuContent";
 
@@ -69,7 +69,7 @@ const MenuItem = (props) => {
   };
 
   const saveContent = () => {
-    dispatch(createMenu(contentItemDetails))
+    dispatch(createContent(contentItemDetails))
       .then(retrieveMenus())
       .then(resetFields())
       .then(closeAddContentMenu());
