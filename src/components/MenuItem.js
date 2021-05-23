@@ -89,7 +89,7 @@ const MenuItem = (props) => {
       {menuDetails.description}
       {menuDetails.menuContents &&
         menuDetails.menuContents.map((content) => (
-          <MenuContent content={content} />
+          <MenuContent content={content} parentId={menuDetails._id} />
         ))}
       <div>
         <Modal

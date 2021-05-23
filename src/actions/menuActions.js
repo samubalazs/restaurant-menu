@@ -129,3 +129,85 @@ export const createContent = (details) => async (dispatch) => {
     return Promise.reject(err);
   }
 };
+
+export const editContent = (id, details, parentId) => async (dispatch) => {
+  try {
+    let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
+
+    const menuItemToChange = currentMenuList.find((obj) => {
+      return obj._id === parentId;
+    });
+    const updatedItem = menuItemToChange.menuContents.map((content) => {
+      if (content._id === id) {
+        return {
+          ...content,
+          ...details,
+        };
+      } else {
+        return content;
+      }
+    });
+
+    menuItemToChange.menuContents = updatedItem;
+
+    const updatedMenuList = currentMenuList.map((menu) => {
+      if (menu._id === parentId) {
+        return {
+          ...menuItemToChange,
+        };
+      } else {
+        return menu;
+      }
+    });
+
+    window.localStorage.setItem("menuList", JSON.stringify(updatedMenuList));
+
+    const res = await JSON.parse(window.localStorage.getItem("menuList"));
+
+    dispatch({
+      type: EDIT_CONTENT,
+      payload: res,
+    });
+
+    return Promise.resolve(res);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export const deleteContent = (id, parentId) => async (dispatch) => {
+  try {
+    let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
+
+    const menuItemToChange = currentMenuList.find((obj) => {
+      return obj._id === parentId;
+    });
+
+    const updatedContentList = menuItemToChange.menuContents.filter(
+      ({ _id }) => _id !== id
+    );
+
+    menuItemToChange.menuContents = updatedContentList || {};
+
+    const updatedMenuList = currentMenuList.map((menu) => {
+      if (menu._id === parentId) {
+        return {
+          ...menuItemToChange,
+        };
+      } else {
+        return menu;
+      }
+    });
+
+    window.localStorage.setItem("menuList", JSON.stringify(updatedMenuList));
+
+    const res = await JSON.parse(window.localStorage.getItem("menuList"));
+
+    dispatch({
+      type: DELETE_CONTENT,
+      payload: res,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
