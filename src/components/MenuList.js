@@ -40,8 +40,6 @@ const MenuList = () => {
   };
 
   const saveMenu = () => {
-    //const { name, description } = menuGroup;
-
     dispatch(createMenu(menuItemDetails))
       .then(retrieveMenus())
       .then(resetFields())

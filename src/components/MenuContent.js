@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Button, Modal } from "react-bootstrap";
 import { editContent, deleteContent } from "../actions/menuActions";
 
 const MenuContent = (props) => {
   const contentDetails = props.content;
-  const parentId = props.parentId;
 
   const [contentItemDetails, setContentItemDetails] = useState(contentDetails);
   const [showEdit, setShowEdit] = useState(false);
@@ -22,12 +21,16 @@ const MenuContent = (props) => {
 
   const saveChanges = () => {
     dispatch(
-      editContent(contentItemDetails._id, contentItemDetails, parentId)
+      editContent(
+        contentItemDetails._id,
+        contentItemDetails,
+        contentDetails.parentId
+      )
     ).then(closeEditContent());
   };
 
   const removeCurrentContent = () => {
-    dispatch(deleteContent(contentItemDetails._id, parentId));
+    dispatch(deleteContent(contentItemDetails._id, contentDetails.parentId));
   };
 
   return (

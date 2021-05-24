@@ -48,7 +48,7 @@ const MenuItem = (props) => {
   const initialContentState = {
     name: "",
     price: "",
-    parentId: menuDetails._id,
+    parentId: menuDetails.parentId,
   };
 
   const [contentItemDetails, setContentItemDetails] =
@@ -89,7 +89,7 @@ const MenuItem = (props) => {
       {menuDetails.description}
       {menuDetails.menuContents &&
         menuDetails.menuContents.map((content) => (
-          <MenuContent content={content} parentId={menuDetails._id} />
+          <MenuContent content={content} />
         ))}
       <div>
         <Modal
