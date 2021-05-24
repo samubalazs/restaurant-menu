@@ -32,7 +32,7 @@ const MenuContent = (props) => {
 
   return (
     <div>
-      {contentDetails.name} - {contentDetails.price} - {parentId}
+      {contentDetails.name} - {contentDetails.price} - {contentDetails.parentId}
       <Button variant="primary" onClick={showEditContent}>
         Edit Content
       </Button>

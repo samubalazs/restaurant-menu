@@ -199,6 +199,10 @@ export const deleteContent = (id, parentId) => async (dispatch) => {
       }
     });
 
+    if (menuItemToChange.menuContents.length < 1) {
+      window.history.go();
+    }
+
     window.localStorage.setItem("menuList", JSON.stringify(updatedMenuList));
 
     const res = await JSON.parse(window.localStorage.getItem("menuList"));
