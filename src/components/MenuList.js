@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { Button, Modal, Navbar, Nav, FormControl, Form } from "react-bootstrap";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Button, Modal, Navbar, Nav } from "react-bootstrap";
 import {
   initLocalStorage,
   retrieveMenus,
@@ -19,6 +19,7 @@ const MenuList = () => {
   }, []);
 
   const initialMenuState = {
+    id: "",
     name: "",
     description: "",
   };
@@ -27,11 +28,25 @@ const MenuList = () => {
   const [showAdd, setShowAdd] = useState(false);
 
   const showAddMenu = () => setShowAdd(true);
-  const closeAddMenu = () => setShowAdd(false);
+  const closeAddMenu = () => {
+    resetFields();
+    setShowAdd(false);
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setMenuItemDetails({ ...menuItemDetails, [name]: value });
+    if (name === "name") {
+      //menuItemDetails._id: value.toLowerCase().replace(/ /g, "_");
+      setMenuItemDetails({
+        ...menuItemDetails,
+        id: value.toLowerCase().replace(/ /g, "_"),
+        name: value,
+      });
+    } else {
+      setMenuItemDetails({ ...menuItemDetails, [name]: value });
+    }
+
+    console.log("there ", menuItemDetails);
   };
 
   const resetFields = () => {

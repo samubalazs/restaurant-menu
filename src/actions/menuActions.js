@@ -34,6 +34,7 @@ export const createMenu = (details) => async (dispatch) => {
   try {
     let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
     currentMenuList.push({
+      id: details.id,
       name: details.name,
       description: details.description,
     });
@@ -56,7 +57,7 @@ export const editMenu = (id, data) => async (dispatch) => {
   try {
     let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
     const updatedMenuList = currentMenuList.map((menu) => {
-      if (menu._id === id) {
+      if (menu.id === id) {
         return {
           ...menu,
           ...data,
@@ -80,10 +81,10 @@ export const editMenu = (id, data) => async (dispatch) => {
   }
 };
 
-export const deleteMenu = (id) => async (dispatch) => {
+export const deleteMenu = (removeId) => async (dispatch) => {
   try {
     let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
-    const updatedMenuList = currentMenuList.filter(({ _id }) => _id !== id);
+    const updatedMenuList = currentMenuList.filter(({ id }) => id !== removeId);
     window.localStorage.setItem("menuList", JSON.stringify(updatedMenuList));
 
     const res = await JSON.parse(window.localStorage.getItem("menuList"));
@@ -101,7 +102,7 @@ export const createContent = (details) => async (dispatch) => {
   try {
     let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
     const updatedMenuList = currentMenuList.map((menu) => {
-      if (menu._id === details.parentId) {
+      if (menu.id === details.parentId) {
         const updatedContentList = menu.menuContents.push({
           name: details.name,
           price: details.price,
@@ -135,10 +136,10 @@ export const editContent = (id, details, parentId) => async (dispatch) => {
     let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
 
     const menuItemToChange = currentMenuList.find((obj) => {
-      return obj._id === parentId;
+      return obj.id === parentId;
     });
     const updatedItem = menuItemToChange.menuContents.map((content) => {
-      if (content._id === id) {
+      if (content.id === id) {
         return {
           ...content,
           ...details,
@@ -151,7 +152,7 @@ export const editContent = (id, details, parentId) => async (dispatch) => {
     menuItemToChange.menuContents = updatedItem;
 
     const updatedMenuList = currentMenuList.map((menu) => {
-      if (menu._id === parentId) {
+      if (menu.id === parentId) {
         return {
           ...menuItemToChange,
         };
@@ -175,22 +176,22 @@ export const editContent = (id, details, parentId) => async (dispatch) => {
   }
 };
 
-export const deleteContent = (id, parentId) => async (dispatch) => {
+export const deleteContent = (removeId, parentId) => async (dispatch) => {
   try {
     let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
 
     const menuItemToChange = currentMenuList.find((obj) => {
-      return obj._id === parentId;
+      return obj.id === parentId;
     });
 
     const updatedContentList = menuItemToChange.menuContents.filter(
-      ({ _id }) => _id !== id
+      ({ id }) => id !== removeId
     );
 
     menuItemToChange.menuContents = updatedContentList || {};
 
     const updatedMenuList = currentMenuList.map((menu) => {
-      if (menu._id === parentId) {
+      if (menu.id === parentId) {
         return {
           ...menuItemToChange,
         };

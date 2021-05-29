@@ -31,7 +31,7 @@ const MenuContent = (props) => {
   const saveChanges = () => {
     dispatch(
       editContent(
-        contentItemDetails._id,
+        contentItemDetails.id,
         contentItemDetails,
         contentDetails.parentId
       )
@@ -39,28 +39,38 @@ const MenuContent = (props) => {
   };
 
   const removeCurrentContent = () => {
-    dispatch(deleteContent(contentItemDetails._id, contentDetails.parentId));
+    dispatch(deleteContent(contentItemDetails.id, contentDetails.parentId));
+  };
+
+  const listIngredients = (ingredients) => {
+    return ingredients.join(",");
   };
 
   return (
     <React.Fragment>
-      <Container>
+      <Container className="content">
         <Row>
           <Col xs={10}>
-            {contentDetails.name} - {contentDetails.price} -{" "}
-            {contentDetails.parentId}
+            <div>
+              {contentDetails.name} - {contentDetails.price}
+            </div>
+            <div>
+              Ingredients: {listIngredients(contentDetails.ingredients)} / Unit:{" "}
+              {contentDetails.quantity}
+              {contentDetails.measurment}
+            </div>
           </Col>
           <Col>
             <div className="content-menu">
               <OverlayTrigger
-                key="bottom"
+                key={`bottom-${contentDetails.id}-edit`}
                 placement="bottom"
                 overlay={<Tooltip id={`tooltip-bottom`}>Edit Content</Tooltip>}
               >
                 <BsPencil onClick={showEditContent} />
               </OverlayTrigger>
               <OverlayTrigger
-                key="bottom"
+                key={`bottom-${contentDetails.id}-remove`}
                 placement="bottom"
                 overlay={
                   <Tooltip id={`tooltip-bottom`}>Remove Content</Tooltip>

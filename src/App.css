@@ -55,3 +55,7 @@ button.close {
   background-color: transparent;
   border: 0;
 }
+
+.container .content {
+  border-bottom: solid 1px black;
+}

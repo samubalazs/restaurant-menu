@@ -39,7 +39,7 @@ const MenuItem = (props) => {
   const dispatch = useDispatch();
 
   const saveChanges = () => {
-    dispatch(editMenu(menuItemDetails._id, menuItemDetails))
+    dispatch(editMenu(menuItemDetails.id, menuItemDetails))
       .then(closeEditMenu())
       .then(
         window.history.replaceState(
@@ -51,7 +51,7 @@ const MenuItem = (props) => {
   };
 
   const removeCurrentMenu = () => {
-    dispatch(deleteMenu(menuDetails._id)).then(
+    dispatch(deleteMenu(menuDetails.id)).then(
       window.history.replaceState(null, "Restaurant Menus", "/")
     );
   };
@@ -98,21 +98,21 @@ const MenuItem = (props) => {
           <Col>
             <div className="control-menu">
               <OverlayTrigger
-                key="bottom"
+                key={`bottom-${menuDetails.id}-edit`}
                 placement="bottom"
                 overlay={<Tooltip id={`tooltip-bottom`}>Edit Menu</Tooltip>}
               >
                 <BsPencil onClick={showEditMenu} />
               </OverlayTrigger>
               <OverlayTrigger
-                key="bottom"
+                key={`bottom-${menuDetails.id}-remove`}
                 placement="bottom"
                 overlay={<Tooltip id={`tooltip-bottom`}>Remove Menu</Tooltip>}
               >
                 <BsFillTrashFill onClick={removeCurrentMenu} />
               </OverlayTrigger>
               <OverlayTrigger
-                key="bottom"
+                key={`bottom-${menuDetails.id}-addcontent`}
                 placement="bottom"
                 overlay={<Tooltip id={`tooltip-bottom`}>Add Content</Tooltip>}
               >

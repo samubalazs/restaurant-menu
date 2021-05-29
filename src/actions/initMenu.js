@@ -1,12 +1,12 @@
 const menuList = [
   {
-    _id: "60a7efe935ac18430fcf6404",
+    id: "menu-starters",
     name: "Starters",
     description: "Prepare your tummy for happy meal",
     menuContents: [
       {
-        _id: "60a7efe9c1890279587dcbcd",
-        parentId: "60a7efe935ac18430fcf6404",
+        id: "component-bread",
+        parentId: "menu-starters",
         name: "Bread",
         price: "$16.88",
         ingredients: ["Flour", "Salt"],
@@ -14,8 +14,8 @@ const menuList = [
         measurment: "gr",
       },
       {
-        _id: "60a7efe96597878269d3c3bb",
-        parentId: "60a7efe935ac18430fcf6404",
+        id: "component-tapas",
+        parentId: "menu-starters",
         name: "Tapas",
         price: "$23.76",
         ingredients: ["Flour", "Salt"],
@@ -25,13 +25,13 @@ const menuList = [
     ],
   },
   {
-    _id: "60a7efe96358b0e6b7d6ea14",
+    id: "menu-soups",
     name: "Soups",
     description: "Enjoy fancy ingredients in water",
     menuContents: [
       {
-        _id: "60a7efe95660183bed93150d",
-        parentId: "60a7efe96358b0e6b7d6ea14",
+        id: "component-tomato-soup",
+        parentId: "menu-soups",
         name: "Tomato Soup",
         price: "$41.10",
         ingredients: ["Tomato", "Water"],
@@ -39,8 +39,8 @@ const menuList = [
         measurment: "ml",
       },
       {
-        _id: "60a7efe9ae2892e82e2f0fdf",
-        parentId: "60a7efe96358b0e6b7d6ea14",
+        id: "component-creamy-broccoli",
+        parentId: "menu-soups",
         name: "Creamy Broccoli",
         price: "$1.62",
         ingredients: ["Broccoli", "Water"],
