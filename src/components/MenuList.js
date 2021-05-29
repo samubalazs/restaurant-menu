@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Navbar, Nav, FormControl, Form } from "react-bootstrap";
 import {
   initLocalStorage,
   retrieveMenus,
@@ -52,21 +52,25 @@ const MenuList = () => {
 
   return (
     <Router>
-      <div>
-        <h4>Restaurant Menu List</h4>
-        <Button variant="primary" onClick={showAddMenu}>
-          Add Menu
-        </Button>
-        <ul>
-          {menus &&
-            menus.map((menu) => {
-              return (
-                <li key={menu.name}>
-                  <Link to={menu.name}>{menu.name}</Link>
-                </li>
-              );
-            })}
-        </ul>
+      <React.Fragment>
+        <h1>Restaurant Menu List</h1>
+        <Navbar bg="light" expand="lg">
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link href="/">Home</Nav.Link>
+              {menus &&
+                menus.map((menu) => {
+                  return <Nav.Link href={menu.name}>{menu.name}</Nav.Link>;
+                })}
+            </Nav>
+            <div className="add-menu">
+              <Button variant="primary" onClick={showAddMenu}>
+                Add Menu
+              </Button>
+            </div>
+          </Navbar.Collapse>
+        </Navbar>
 
         <hr />
 
@@ -80,8 +84,6 @@ const MenuList = () => {
               );
             })}
         </Switch>
-      </div>
-      <div>
         <Modal show={showAdd} onHide={closeAddMenu} centered animation={false}>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
@@ -125,7 +127,7 @@ const MenuList = () => {
             </Button>
           </Modal.Footer>
         </Modal>
-      </div>
+      </React.Fragment>
     </Router>
   );
 };

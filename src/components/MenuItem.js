@@ -1,6 +1,19 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Button, Modal } from "react-bootstrap";
+import {
+  Button,
+  Modal,
+  OverlayTrigger,
+  Tooltip,
+  Container,
+  Row,
+  Col,
+} from "react-bootstrap";
+import {
+  BsPencil,
+  BsFillTrashFill,
+  BsFillPlusSquareFill,
+} from "react-icons/bs";
 import {
   editMenu,
   deleteMenu,
@@ -76,21 +89,50 @@ const MenuItem = (props) => {
   };
 
   return (
-    <div>
-      <Button variant="primary" onClick={showEditMenu}>
-        Edit Menu
-      </Button>
-      <Button variant="primary" onClick={removeCurrentMenu}>
-        Delete Menu
-      </Button>
-      <Button variant="primary" onClick={showAddContentMenu}>
-        Add Menu Content
-      </Button>
-      {menuDetails.description}
-      {menuDetails.menuContents &&
-        menuDetails.menuContents.map((content) => (
-          <MenuContent content={content} />
-        ))}
+    <React.Fragment>
+      <Container>
+        <Row>
+          <Col xs={10} className="menu-description">
+            {menuDetails.description}
+          </Col>
+          <Col>
+            <div className="control-menu">
+              <OverlayTrigger
+                key="bottom"
+                placement="bottom"
+                overlay={<Tooltip id={`tooltip-bottom`}>Edit Menu</Tooltip>}
+              >
+                <BsPencil onClick={showEditMenu} />
+              </OverlayTrigger>
+              <OverlayTrigger
+                key="bottom"
+                placement="bottom"
+                overlay={<Tooltip id={`tooltip-bottom`}>Remove Menu</Tooltip>}
+              >
+                <BsFillTrashFill onClick={removeCurrentMenu} />
+              </OverlayTrigger>
+              <OverlayTrigger
+                key="bottom"
+                placement="bottom"
+                overlay={<Tooltip id={`tooltip-bottom`}>Add Content</Tooltip>}
+              >
+                <BsFillPlusSquareFill onClick={showAddContentMenu} />
+              </OverlayTrigger>
+            </div>
+          </Col>
+        </Row>
+
+        <hr />
+        <Row>
+          <Col xs={10}>
+            {menuDetails.menuContents &&
+              menuDetails.menuContents.map((content) => (
+                <MenuContent content={content} />
+              ))}
+          </Col>
+        </Row>
+      </Container>
+
       <div>
         <Modal
           show={showEdit}
@@ -191,7 +233,7 @@ const MenuItem = (props) => {
           </Modal.Footer>
         </Modal>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 

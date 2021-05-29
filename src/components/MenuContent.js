@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Button, Modal } from "react-bootstrap";
+import {
+  Button,
+  Modal,
+  OverlayTrigger,
+  Tooltip,
+  Container,
+  Row,
+  Col,
+} from "react-bootstrap";
+import { BsPencil, BsFillTrashFill } from "react-icons/bs";
 import { editContent, deleteContent } from "../actions/menuActions";
 
 const MenuContent = (props) => {
@@ -34,14 +43,36 @@ const MenuContent = (props) => {
   };
 
   return (
-    <div>
-      {contentDetails.name} - {contentDetails.price} - {contentDetails.parentId}
-      <Button variant="primary" onClick={showEditContent}>
-        Edit Content
-      </Button>
-      <Button variant="primary" onClick={removeCurrentContent}>
-        Delete Menu
-      </Button>
+    <React.Fragment>
+      <Container>
+        <Row>
+          <Col xs={10}>
+            {contentDetails.name} - {contentDetails.price} -{" "}
+            {contentDetails.parentId}
+          </Col>
+          <Col>
+            <div className="content-menu">
+              <OverlayTrigger
+                key="bottom"
+                placement="bottom"
+                overlay={<Tooltip id={`tooltip-bottom`}>Edit Content</Tooltip>}
+              >
+                <BsPencil onClick={showEditContent} />
+              </OverlayTrigger>
+              <OverlayTrigger
+                key="bottom"
+                placement="bottom"
+                overlay={
+                  <Tooltip id={`tooltip-bottom`}>Remove Content</Tooltip>
+                }
+              >
+                <BsFillTrashFill onClick={removeCurrentContent} />
+              </OverlayTrigger>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+
       <div>
         <Modal
           show={showEdit}
@@ -92,7 +123,7 @@ const MenuContent = (props) => {
           </Modal.Footer>
         </Modal>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 
