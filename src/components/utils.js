@@ -1,13 +1,15 @@
 export const currency = "$";
 
-const ingredientOptions = ["Salt", "Pepper"];
+export const ingredientOptions = [
+  { value: "salt", label: "Salt" },
+  { value: "pepper", label: "Pepper" },
+];
 
-export const createOptions = () => {
-  return ingredientOptions.map(function (ingredient, i) {
-    return (
-      <option key={i} value={ingredient}>
-        {ingredient}
-      </option>
-    );
-  });
-};
+export const measurments = [
+  { name: "Gr", id: 1 },
+  { name: "Ml", id: 2 },
+];
+
+export const createMeasurmentOptions = measurments.map((v) => (
+  <option value={v.name}>{v.name}</option>
+));

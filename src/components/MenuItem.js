@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import Select from "react-select";
 import {
   Button,
   Modal,
@@ -21,7 +22,7 @@ import {
   createContent,
 } from "../actions/menuActions";
 import MenuContent from "./MenuContent";
-import { createOptions } from "./utils";
+import { ingredientOptions, createMeasurmentOptions } from "./utils";
 
 const MenuItem = (props) => {
   const menuDetails = props.menuDetails;
@@ -61,21 +62,25 @@ const MenuItem = (props) => {
 
   const initialContentState = {
     id: "",
+    parentId: "",
     name: "",
     price: "",
-    parentId: "aaa1",
+    ingredients: [],
+    quantity: "",
+    measurment: "",
   };
 
   const [contentItemDetails, setContentItemDetails] =
     useState(initialContentState);
   const [showAddContent, setShowAddContent] = useState(false);
 
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
+
   const showAddContentMenu = () => setShowAddContent(true);
   const closeAddContentMenu = () => setShowAddContent(false);
 
   const handleContentDetailsChange = (event) => {
     const { name, value } = event.target;
-    console.log(value);
     if (name === "name") {
       setContentItemDetails({
         ...contentItemDetails,
@@ -90,7 +95,14 @@ const MenuItem = (props) => {
         [name]: value,
       });
     }
-    console.log(contentItemDetails);
+  };
+
+  const handleIngredientsChange = (e) => {
+    setSelectedIngredients(Array.isArray(e) ? e.map((x) => x.value) : []);
+    setContentItemDetails({
+      ...contentItemDetails,
+      ingredients: selectedIngredients,
+    });
   };
 
   const resetFields = () => {
@@ -240,17 +252,44 @@ const MenuItem = (props) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="price">Ingredients</label>
-              <select
-                name="ingredients"
+              <label htmlFor="ingredients">Ingredients</label>
+              <Select
+                className="dropdown"
+                placeholder="Select Option"
+                value={ingredientOptions.filter((obj) =>
+                  selectedIngredients.includes(obj.value)
+                )}
+                options={ingredientOptions}
+                onChange={handleIngredientsChange}
+                isMulti
+                isClearable
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="quantity">Quantity</label>
+              <input
+                type="number"
                 className="form-control"
-                id="ingredients"
+                id="quantity"
                 required
-                value={showAddContent.ingredients}
+                value={showAddContent.quantity}
                 onChange={handleContentDetailsChange}
-                multiple
+                name="quantity"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="measurment">Measurment</label>
+              <select
+                className="form-control"
+                id="measurment"
+                required
+                value={showAddContent.measurment}
+                onChange={handleContentDetailsChange}
+                name="measurment"
               >
-                {createOptions()}
+                {createMeasurmentOptions}
               </select>
             </div>
           </Modal.Body>

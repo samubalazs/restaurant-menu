@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import Select from "react-select";
 import {
   Button,
   Modal,
@@ -11,12 +12,13 @@ import {
 } from "react-bootstrap";
 import { BsPencil, BsFillTrashFill } from "react-icons/bs";
 import { editContent, deleteContent } from "../actions/menuActions";
-import { currency, createOptions } from "./utils";
+import { currency, ingredientOptions, createMeasurmentOptions } from "./utils";
 
 const MenuContent = (props) => {
   const contentDetails = props.content;
 
   const [contentItemDetails, setContentItemDetails] = useState(contentDetails);
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [showEdit, setShowEdit] = useState(false);
 
   const showEditContent = () => setShowEdit(true);
@@ -24,12 +26,33 @@ const MenuContent = (props) => {
 
   const handleContentDetailsChange = (event) => {
     const { name, value } = event.target;
-    setContentItemDetails({ ...contentItemDetails, [name]: value });
+    if (name === "name") {
+      setContentItemDetails({
+        ...contentItemDetails,
+        id: value.toLowerCase().replace(/ /g, "-"),
+        name: value,
+      });
+    } else {
+      setContentItemDetails({
+        ...contentItemDetails,
+        [name]: value,
+      });
+    }
+  };
+
+  const handleIngredientsChange = (e) => {
+    console.log(e);
+    setSelectedIngredients(e);
+    setContentItemDetails({
+      ...contentItemDetails,
+      ingredients: selectedIngredients,
+    });
   };
 
   const dispatch = useDispatch();
 
   const saveChanges = () => {
+    console.log(contentItemDetails);
     dispatch(
       editContent(
         contentItemDetails.id,
@@ -44,7 +67,7 @@ const MenuContent = (props) => {
   };
 
   const listIngredients = (ingredients) => {
-    return ingredients.join(", ");
+    return ingredients.map((item) => item.label).join(", ");
   };
 
   return (
@@ -110,6 +133,7 @@ const MenuContent = (props) => {
                 name="name"
               />
             </div>
+
             <div className="form-group">
               <label htmlFor="price">Price</label>
               <input
@@ -122,16 +146,44 @@ const MenuContent = (props) => {
                 name="price"
               />
             </div>
+
             <div className="form-group">
-              <label htmlFor="price">Price</label>
-              <select name="pets" id="pet-select">
-                <option value="">--Please choose an option--</option>
-                <option value="dog">Dog</option>
-                <option value="cat">Cat</option>
-                <option value="hamster">Hamster</option>
-                <option value="parrot">Parrot</option>
-                <option value="spider">Spider</option>
-                <option value="goldfish">Goldfish</option>
+              <label htmlFor="ingredients">Ingredients</label>
+              <Select
+                className="dropdown"
+                placeholder="Select Option"
+                defaultValue={contentDetails.ingredients}
+                options={ingredientOptions}
+                onChange={handleIngredientsChange}
+                isMulti
+                isClearable
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="quantity">Quantity</label>
+              <input
+                type="number"
+                className="form-control"
+                id="quantity"
+                required
+                defaultValue={contentDetails.quantity}
+                onChange={handleContentDetailsChange}
+                name="quantity"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="measurment">Measurment</label>
+              <select
+                className="form-control"
+                id="measurment"
+                required
+                defaultValue={contentDetails.measurment}
+                onChange={handleContentDetailsChange}
+                name="measurment"
+              >
+                {createMeasurmentOptions}
               </select>
             </div>
           </Modal.Body>
