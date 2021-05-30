@@ -37,6 +37,7 @@ export const createMenu = (details) => async (dispatch) => {
       id: details.id,
       name: details.name,
       description: details.description,
+      menuContents: [],
     });
     window.localStorage.setItem("menuList", JSON.stringify(currentMenuList));
 
@@ -104,8 +105,13 @@ export const createContent = (details) => async (dispatch) => {
     const updatedMenuList = currentMenuList.map((menu) => {
       if (menu.id === details.parentId) {
         const updatedContentList = menu.menuContents.push({
+          id: details.id,
+          parentId: details.parentId,
           name: details.name,
           price: details.price,
+          ingredients: [],
+          quantity: details.quantity,
+          measurment: details.measurment,
         });
         return {
           ...menu,

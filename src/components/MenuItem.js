@@ -21,6 +21,7 @@ import {
   createContent,
 } from "../actions/menuActions";
 import MenuContent from "./MenuContent";
+import { createOptions } from "./utils";
 
 const MenuItem = (props) => {
   const menuDetails = props.menuDetails;
@@ -59,9 +60,10 @@ const MenuItem = (props) => {
   //---------------
 
   const initialContentState = {
+    id: "",
     name: "",
     price: "",
-    parentId: menuDetails.parentId,
+    parentId: "aaa1",
   };
 
   const [contentItemDetails, setContentItemDetails] =
@@ -73,7 +75,22 @@ const MenuItem = (props) => {
 
   const handleContentDetailsChange = (event) => {
     const { name, value } = event.target;
-    setContentItemDetails({ ...contentItemDetails, [name]: value });
+    console.log(value);
+    if (name === "name") {
+      setContentItemDetails({
+        ...contentItemDetails,
+        id: value.toLowerCase().replace(/ /g, "-"),
+        name: value,
+        parentId: menuDetails.id,
+      });
+    } else {
+      setContentItemDetails({
+        ...contentItemDetails,
+        parentId: menuDetails.id,
+        [name]: value,
+      });
+    }
+    console.log(contentItemDetails);
   };
 
   const resetFields = () => {
@@ -126,8 +143,8 @@ const MenuItem = (props) => {
         <Row>
           <Col xs={10}>
             {menuDetails.menuContents &&
-              menuDetails.menuContents.map((content) => (
-                <MenuContent content={content} />
+              menuDetails.menuContents.map((content, id) => (
+                <MenuContent content={content} key={id} />
               ))}
           </Col>
         </Row>
@@ -211,9 +228,8 @@ const MenuItem = (props) => {
 
             <div className="form-group">
               <label htmlFor="price">Price</label>
-              <textarea
-                rows="10"
-                cols="100"
+              <input
+                type="number"
                 className="form-control"
                 id="price"
                 required
@@ -221,6 +237,21 @@ const MenuItem = (props) => {
                 onChange={handleContentDetailsChange}
                 name="price"
               />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="price">Ingredients</label>
+              <select
+                name="ingredients"
+                className="form-control"
+                id="ingredients"
+                required
+                value={showAddContent.ingredients}
+                onChange={handleContentDetailsChange}
+                multiple
+              >
+                {createOptions()}
+              </select>
             </div>
           </Modal.Body>
           <Modal.Footer>

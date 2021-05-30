@@ -36,17 +36,14 @@ const MenuList = () => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (name === "name") {
-      //menuItemDetails._id: value.toLowerCase().replace(/ /g, "_");
       setMenuItemDetails({
         ...menuItemDetails,
-        id: value.toLowerCase().replace(/ /g, "_"),
+        id: value.toLowerCase().replace(/ /g, "-"),
         name: value,
       });
     } else {
       setMenuItemDetails({ ...menuItemDetails, [name]: value });
     }
-
-    console.log("there ", menuItemDetails);
   };
 
   const resetFields = () => {
@@ -75,12 +72,16 @@ const MenuList = () => {
             <Nav className="mr-auto">
               <Nav.Link href="/">Home</Nav.Link>
               {menus &&
-                menus.map((menu) => {
-                  return <Nav.Link href={menu.name}>{menu.name}</Nav.Link>;
+                menus.map((menu, id) => {
+                  return (
+                    <Nav.Link href={menu.name} key={id}>
+                      {menu.name}
+                    </Nav.Link>
+                  );
                 })}
             </Nav>
             <div className="add-menu">
-              <Button variant="primary" onClick={showAddMenu}>
+              <Button variant="dark" onClick={showAddMenu}>
                 Add Menu
               </Button>
             </div>
@@ -91,9 +92,9 @@ const MenuList = () => {
 
         <Switch>
           {menus &&
-            menus.map((menu) => {
+            menus.map((menu, id) => {
               return (
-                <Route path={createRouterPath(menu.name)}>
+                <Route path={createRouterPath(menu.name)} key={id}>
                   <MenuItem menuDetails={menu} />
                 </Route>
               );

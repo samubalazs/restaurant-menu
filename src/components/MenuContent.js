@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import { BsPencil, BsFillTrashFill } from "react-icons/bs";
 import { editContent, deleteContent } from "../actions/menuActions";
+import { currency, createOptions } from "./utils";
 
 const MenuContent = (props) => {
   const contentDetails = props.content;
@@ -43,7 +44,7 @@ const MenuContent = (props) => {
   };
 
   const listIngredients = (ingredients) => {
-    return ingredients.join(",");
+    return ingredients.join(", ");
   };
 
   return (
@@ -52,7 +53,8 @@ const MenuContent = (props) => {
         <Row>
           <Col xs={10}>
             <div>
-              {contentDetails.name} - {contentDetails.price}
+              {contentDetails.name} - {currency}
+              {contentDetails.price}
             </div>
             <div>
               Ingredients: {listIngredients(contentDetails.ingredients)} / Unit:{" "}
@@ -108,12 +110,10 @@ const MenuContent = (props) => {
                 name="name"
               />
             </div>
-
             <div className="form-group">
               <label htmlFor="price">Price</label>
-              <textarea
-                rows="10"
-                cols="100"
+              <input
+                type="number"
                 className="form-control"
                 id="price"
                 required
@@ -121,6 +121,18 @@ const MenuContent = (props) => {
                 onChange={handleContentDetailsChange}
                 name="price"
               />
+            </div>
+            <div className="form-group">
+              <label htmlFor="price">Price</label>
+              <select name="pets" id="pet-select">
+                <option value="">--Please choose an option--</option>
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+                <option value="hamster">Hamster</option>
+                <option value="parrot">Parrot</option>
+                <option value="spider">Spider</option>
+                <option value="goldfish">Goldfish</option>
+              </select>
             </div>
           </Modal.Body>
           <Modal.Footer>
