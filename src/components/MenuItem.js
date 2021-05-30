@@ -67,7 +67,7 @@ const MenuItem = (props) => {
     price: "",
     ingredients: [],
     quantity: "",
-    measurment: "",
+    measurment: "Gr",
   };
 
   const [contentItemDetails, setContentItemDetails] =
@@ -80,19 +80,26 @@ const MenuItem = (props) => {
   const closeAddContentMenu = () => setShowAddContent(false);
 
   const handleContentDetailsChange = (event) => {
-    const { name, value } = event.target;
-    if (name === "name") {
-      setContentItemDetails({
-        ...contentItemDetails,
-        id: value.toLowerCase().replace(/ /g, "-"),
-        name: value,
-        parentId: menuDetails.id,
-      });
+    if (event.target) {
+      const { name, value } = event.target;
+      if (name === "name") {
+        setContentItemDetails({
+          ...contentItemDetails,
+          id: value.toLowerCase().replace(/ /g, "-"),
+          name: value,
+          parentId: menuDetails.id,
+        });
+      } else {
+        setContentItemDetails({
+          ...contentItemDetails,
+          parentId: menuDetails.id,
+          [name]: value,
+        });
+      }
     } else {
       setContentItemDetails({
         ...contentItemDetails,
-        parentId: menuDetails.id,
-        [name]: value,
+        ingredients: event,
       });
     }
   };
@@ -260,7 +267,7 @@ const MenuItem = (props) => {
                   selectedIngredients.includes(obj.value)
                 )}
                 options={ingredientOptions}
-                onChange={handleIngredientsChange}
+                onChange={handleContentDetailsChange}
                 isMulti
                 isClearable
               />

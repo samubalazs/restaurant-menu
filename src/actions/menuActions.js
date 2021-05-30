@@ -109,7 +109,7 @@ export const createContent = (details) => async (dispatch) => {
           parentId: details.parentId,
           name: details.name,
           price: details.price,
-          ingredients: [],
+          ingredients: details.ingredients,
           quantity: details.quantity,
           measurment: details.measurment,
         });
@@ -137,9 +137,37 @@ export const createContent = (details) => async (dispatch) => {
   }
 };
 
-export const editContent = (id, details, parentId) => async (dispatch) => {
+export const editContent = (details) => async (dispatch) => {
   try {
     let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
+
+    const menuItemToChange = currentMenuList.find((obj) => {
+      return obj.id === details.parentId;
+    });
+    const updatedItem = menuItemToChange.menuContents.map((content) => {
+      if (content.id === details.id) {
+        return {
+          ...content,
+          ...details,
+        };
+      } else {
+        return content;
+      }
+    });
+    menuItemToChange.menuContents = updatedItem;
+
+    const updatedMenuList = currentMenuList.map((menu) => {
+      if (menu.id === details.parentId) {
+        return {
+          ...menuItemToChange,
+        };
+      } else {
+        return menu;
+      }
+    });
+
+    window.localStorage.setItem("menuList", JSON.stringify(updatedMenuList));
+    /*let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
 
     const menuItemToChange = currentMenuList.find((obj) => {
       return obj.id === parentId;
@@ -167,7 +195,7 @@ export const editContent = (id, details, parentId) => async (dispatch) => {
       }
     });
 
-    window.localStorage.setItem("menuList", JSON.stringify(updatedMenuList));
+    window.localStorage.setItem("menuList", JSON.stringify(updatedMenuList));*/
 
     const res = await JSON.parse(window.localStorage.getItem("menuList"));
 

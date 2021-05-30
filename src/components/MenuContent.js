@@ -18,48 +18,38 @@ const MenuContent = (props) => {
   const contentDetails = props.content;
 
   const [contentItemDetails, setContentItemDetails] = useState(contentDetails);
-  const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [showEdit, setShowEdit] = useState(false);
 
   const showEditContent = () => setShowEdit(true);
   const closeEditContent = () => setShowEdit(false);
 
   const handleContentDetailsChange = (event) => {
-    const { name, value } = event.target;
-    if (name === "name") {
-      setContentItemDetails({
-        ...contentItemDetails,
-        id: value.toLowerCase().replace(/ /g, "-"),
-        name: value,
-      });
+    if (event.target) {
+      const { name, value } = event.target;
+      if (name === "name") {
+        setContentItemDetails({
+          ...contentItemDetails,
+          id: value.toLowerCase().replace(/ /g, "-"),
+          name: value,
+        });
+      } else {
+        setContentItemDetails({
+          ...contentItemDetails,
+          [name]: value,
+        });
+      }
     } else {
       setContentItemDetails({
         ...contentItemDetails,
-        [name]: value,
+        ingredients: event,
       });
     }
-  };
-
-  const handleIngredientsChange = (e) => {
-    console.log(e);
-    setSelectedIngredients(e);
-    setContentItemDetails({
-      ...contentItemDetails,
-      ingredients: selectedIngredients,
-    });
   };
 
   const dispatch = useDispatch();
 
   const saveChanges = () => {
-    console.log(contentItemDetails);
-    dispatch(
-      editContent(
-        contentItemDetails.id,
-        contentItemDetails,
-        contentDetails.parentId
-      )
-    ).then(closeEditContent());
+    dispatch(editContent(contentItemDetails)).then(closeEditContent());
   };
 
   const removeCurrentContent = () => {
@@ -154,7 +144,7 @@ const MenuContent = (props) => {
                 placeholder="Select Option"
                 defaultValue={contentDetails.ingredients}
                 options={ingredientOptions}
-                onChange={handleIngredientsChange}
+                onChange={handleContentDetailsChange}
                 isMulti
                 isClearable
               />
