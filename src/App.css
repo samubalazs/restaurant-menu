@@ -6,13 +6,13 @@ h1 {
   text-align: center;
 }
 
-.menu-description {
-  margin-top: 15px;
-}
-
 .add-menu {
   position: absolute;
   right: 5px;
+}
+
+.menu-description {
+  margin-top: 15px;
 }
 
 .control-menu {

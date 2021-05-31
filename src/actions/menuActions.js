@@ -54,14 +54,14 @@ export const createMenu = (details) => async (dispatch) => {
   }
 };
 
-export const editMenu = (id, data) => async (dispatch) => {
+export const editMenu = (id, details) => async (dispatch) => {
   try {
     let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
     const updatedMenuList = currentMenuList.map((menu) => {
       if (menu.id === id) {
         return {
           ...menu,
-          ...data,
+          ...details,
         };
       } else {
         return menu;
@@ -168,35 +168,6 @@ export const editContent = (details) => async (dispatch) => {
     });
 
     window.localStorage.setItem("menuList", JSON.stringify(updatedMenuList));
-    /*let currentMenuList = JSON.parse(window.localStorage.getItem("menuList"));
-
-    const menuItemToChange = currentMenuList.find((obj) => {
-      return obj.id === parentId;
-    });
-    const updatedItem = menuItemToChange.menuContents.map((content) => {
-      if (content.id === id) {
-        return {
-          ...content,
-          ...details,
-        };
-      } else {
-        return content;
-      }
-    });
-
-    menuItemToChange.menuContents = updatedItem;
-
-    const updatedMenuList = currentMenuList.map((menu) => {
-      if (menu.id === parentId) {
-        return {
-          ...menuItemToChange,
-        };
-      } else {
-        return menu;
-      }
-    });
-
-    window.localStorage.setItem("menuList", JSON.stringify(updatedMenuList));*/
 
     const res = await JSON.parse(window.localStorage.getItem("menuList"));
 

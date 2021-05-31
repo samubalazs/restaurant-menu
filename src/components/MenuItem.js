@@ -74,8 +74,6 @@ const MenuItem = (props) => {
     useState(initialContentState);
   const [showAddContent, setShowAddContent] = useState(false);
 
-  const [selectedIngredients, setSelectedIngredients] = useState([]);
-
   const showAddContentMenu = () => setShowAddContent(true);
   const closeAddContentMenu = () => setShowAddContent(false);
 
@@ -104,17 +102,12 @@ const MenuItem = (props) => {
     }
   };
 
-  const handleIngredientsChange = (e) => {
-    setSelectedIngredients(Array.isArray(e) ? e.map((x) => x.value) : []);
-    setContentItemDetails({
-      ...contentItemDetails,
-      ingredients: selectedIngredients,
-    });
-  };
-
   const resetFields = () => {
     contentItemDetails.name = "";
     contentItemDetails.price = "";
+    contentItemDetails.ingredients = [];
+    contentItemDetails.quantity = "";
+    contentItemDetails.measurment = "Gr";
   };
 
   const saveContent = () => {
@@ -159,6 +152,7 @@ const MenuItem = (props) => {
         </Row>
 
         <hr />
+
         <Row>
           <Col xs={10}>
             {menuDetails.menuContents &&
@@ -219,6 +213,7 @@ const MenuItem = (props) => {
           </Modal.Footer>
         </Modal>
       </div>
+
       <div>
         <Modal
           show={showAddContent}
