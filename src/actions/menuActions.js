@@ -113,6 +113,7 @@ export const createContent = (details) => async (dispatch) => {
           quantity: details.quantity,
           measurment: details.measurment,
         });
+
         return {
           ...menu,
           updatedContentList,

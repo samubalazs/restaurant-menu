@@ -263,9 +263,7 @@ const MenuItem = (props) => {
               <Select
                 className="dropdown"
                 placeholder="Select Option"
-                value={ingredientOptions.filter((obj) =>
-                  selectedIngredients.includes(obj.value)
-                )}
+                value={showAddContent.ingredients}
                 options={ingredientOptions}
                 onChange={handleContentDetailsChange}
                 isMulti
